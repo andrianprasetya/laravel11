@@ -6,6 +6,12 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 
+import { iconsSet as icons } from '@/Assets/icons'
+
+import CoreuiVue from '@coreui/vue'
+import CIcon from '@coreui/icons-vue'
+import { createPinia } from 'pinia'
+
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 createInertiaApp({
@@ -15,6 +21,10 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use(plugin)
             .use(ZiggyVue)
+            .use(createPinia())
+            .use(CoreuiVue)
+            .provide('icons', icons)
+            .component('CIcon', CIcon)
             .mount(el);
     },
     progress: {
