@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\User\LogController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -16,24 +15,8 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard', [
-        'breadcrumbs' => [
-            ['name' => 'Home', 'path' => '/'],
-            ['name' => 'Dashboard', 'path' => '/dashboard']
-        ]
-    ]);
+    return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-Route::name('user.')->prefix('/user')->group(function () {
-    Route::get('/log', function () {
-        return Inertia::render('Log');
-    });
-    /*Route::get('/logs', [LogController::class, 'index'])->name('user.log.index');*/
-});
-
-Route::get('/new-dashboard', function () {
-    return Inertia::render('NewDashboard');
-})->name('new-dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,4 +24,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__.'/auth.php';
