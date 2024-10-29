@@ -1,40 +1,34 @@
+
+
 <script setup>
-import { ref, computed, watchEffect } from 'vue';
-import { usePage, Link } from '@inertiajs/vue3';
+import {Link} from "@inertiajs/vue3";
+import Breadcrumb from 'primevue/breadcrumb';
+import {computed} from 'vue';
+import {usePage} from '@inertiajs/vue3';
 
-const breadcrumbHome = ref({ icon: 'pi pi-home', to: '/' });
-const activeIndex = ref(0);
+const home = {
+    icon: 'pi pi-home',
+    url: '/'
+};
 
-const page = usePage();
-const currentUrl = computed(() => page.url);
+const {props} = usePage();
 
-const breadcrumbItems = computed(() => {
-    const parts = currentUrl.value.split('/').filter(Boolean);
-    console.log(parts)
-    return parts.map((part, index) => ({
-        label: part.charAt(0).toUpperCase() + part.slice(1),
-        to: '/' + parts.slice(0, index + 1).join('/')
-    }));
-});
-
-watchEffect(() => {
-    // Update activeIndex based on the current URL
-    activeIndex.value = breadcrumbItems.value.length - 1;
-});
-
-
+const items = computed(() => props.breadcrumbs || []);
 </script>
 
 <template>
     <div class="grid">
         <div class="col-12">
-            <Breadcrumb :home="breadcrumbHome" :model="breadcrumbItems">
+            <Breadcrumb :home="home" :model="items">
                 <template #item="{ item, props }">
-                    <Link v-if="item.to" :href="item.to" custom :class="{ 'active': props.isActive }" v-bind="props.action">
+                    <Link v-if="item.route" v-slot="{ href, navigate }" :to="item.route" custom>
+                        <a :href="href" v-bind="props.action" @click="navigate">
                             <span :class="[item.icon, 'text-color']"></span>
                             <span class="text-primary font-semibold">{{ item.label }}</span>
+                        </a>
                     </Link>
-                    <a v-else :href="item.url" :target="item.target" :class="{ 'active': props.isActive }" v-bind="props.action">
+                    <a v-else :href="item.url" :target="item.target" v-bind="props.action">
+                        <span :class="[item.icon, 'text-color']"></span>
                         <span class="text-surface-700 dark:text-surface-0">{{ item.label }}</span>
                     </a>
                 </template>

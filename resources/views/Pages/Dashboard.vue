@@ -105,6 +105,15 @@ watch(
     },
     {immediate: true}
 );
+defineProps({
+    breadcrumbs: {
+        type: Array,
+        required: true
+    }
+});
+</script>
+<script>
+
 </script>
 
 <template>

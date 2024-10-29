@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -15,13 +16,25 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    return Inertia::render('Dashboard', [
+        'breadcrumbs' => [
+            ['label' => 'Dashboard' ]
+        ]
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware(['auth', 'verified'])->prefix('users')->group(function () {
-    Route::get('/log', function () {
-        return Inertia::render('User/Log');
-    })->name('log');
+    /*Route::get('/log', function () {
+        return Inertia::render('User/Log', [
+            'breadcrumbs' => [
+                ['label' => 'Dashboard', 'url' => '/dashboard'],
+                ['label' => 'User'],
+                ['label' => 'Log'],
+            ]
+        ]);
+    })->name('log');*/
+
+    Route::get('/log', [LogController::class, 'index'])->name('log.index');
 });
 
 
