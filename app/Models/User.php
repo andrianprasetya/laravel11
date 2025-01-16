@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Traits\Uuid;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
-    use HasFactory, Notifiable, Uuid;
+    use HasFactory, Notifiable, Uuid, SoftDeletes;
 
     /**
      * Indicates if the IDs are auto-incrementing.
@@ -32,8 +33,6 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $primaryKey = 'id';
-
-
 
     /**
      * The attributes that are mass assignable.

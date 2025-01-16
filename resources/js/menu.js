@@ -7,7 +7,11 @@ export const menu = ref([
     },
     {
         label: 'Users',
-        items: [{ label: 'Log', icon: 'pi pi-fw pi-history', to: '/users/log' }]
+        items: [
+            { label: 'Users', icon: 'pi pi-fw pi-users', to: '/admin/user' },
+            { label: 'Roles', icon: 'pi pi-fw pi-user-edit', to: '/admin/user/role' },
+            { label: 'Sessions', icon: 'pi pi-fw pi-history', to: '/admin/user/session' }
+        ]
     },
     {
         label: 'UI Components',

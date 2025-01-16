@@ -13,14 +13,35 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+
+    protected array $breadcrumb = array();
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->menu = 'Users';
+        $this->route = $this->routes['web'] . 'admin.user';
+        $this->slug = $this->slugs['web'] . 'user';
+        $this->view = $this->views['web'] . 'user';
+        $this->breadcrumb = $this->breadcrumbs;
+
+        \Inertia\Inertia::share([
+            'menu' => $this->menu,
+        ]);
+    }
+
     /**
      * Display the user's profile form.
      */
     public function edit(Request $request): Response
     {
+        $breadcrumb = $this->breadcrumb;
+        $breadcrumb[] = ['label' => 'User', 'slug' => 'user'];
+        $breadcrumb[] = ['label' => 'Profile', 'slug' => 'profile'];
         return Inertia::render('Profile/Edit', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => session('status'),
+            'breadcrumbs' => $breadcrumb
         ]);
     }
 

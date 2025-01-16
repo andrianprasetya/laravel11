@@ -2,6 +2,7 @@ import './bootstrap';
 import '../css/app.css';
 import '../css/assets/styles.scss';
 
+
 import {createApp, h} from 'vue';
 import {createInertiaApp} from '@inertiajs/vue3';
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
@@ -110,6 +111,58 @@ import TreeSelect from 'primevue/treeselect';
 import TreeTable from 'primevue/treetable';
 import TriStateCheckbox from 'primevue/tristatecheckbox';
 import VirtualScroller from 'primevue/virtualscroller';
+import { Buffer } from 'buffer';
+
+const primevueLocale = {
+    startsWith: 'Dimulai dengan',
+    contains: 'Mengandung',
+    notContains: 'Tidak Mengandung',
+    endsWith: 'Diakhiri dengan',
+    equals: 'Sama dengan',
+    notEquals: 'Tidak Sama Dengan',
+    noFilter: 'Tidak Ada Filter',
+    lt: 'Kurang dari',
+    lte: 'Kurang dari atau sama dengan',
+    gt: 'Lebih besar dari',
+    gte: 'Lebih besar atau sama dengan',
+    dateIs: 'Tanggal adalah',
+    dateIsNot: 'Tanggal bukan',
+    dateBefore: 'Tanggal sebelum',
+    dateAfter: 'Tanggal sesudah',
+    clear: 'Hapus',
+    apply: 'Terapkan',
+    matchAll: 'Cocok semua',
+    matchAny: 'Cocok salah satu',
+    addRule: 'Tambah aturan',
+    removeRule: 'Hapus aturan',
+    accept: 'Ya',
+    reject: 'Tidak',
+    choose: 'Pilih',
+    upload: 'Unggah',
+    cancel: 'Batal',
+    dayNames: ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'],
+    dayNamesShort: ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'],
+    dayNamesMin: ['Mg', 'Sn', 'Sl', 'Rb', 'Km', 'Jm', 'Sb'],
+    monthNames: [
+        'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+        'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+    ],
+    monthNamesShort: [
+        'Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'
+    ],
+    today: 'Hari ini',
+    weekHeader: 'Minggu',
+    firstDayOfWeek: 1, // Senin sebagai awal minggu
+    dateFormat: 'dd/mm/yy',
+    weak: 'Lemah',
+    medium: 'Sedang',
+    strong: 'Kuat',
+    passwordPrompt: 'Masukkan password',
+    emptyFilterMessage: 'Tidak ada opsi yang cocok',
+    emptyMessage: 'Tidak ada data yang tersedia',
+};
+
+window.Buffer = Buffer;
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -119,7 +172,10 @@ createInertiaApp({
     setup({el, App, props, plugin}) {
         return createApp({render: () => h(App, props)})
             .use(plugin)
-            .use(PrimeVue, {ripple: true})
+            .use(PrimeVue, {
+                ripple: true,
+                locale: primevueLocale,  // Add locale configuration here
+            })
             .use(ToastService)
             .use(DialogService)
             .use(ConfirmationService)

@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\LogController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SessionController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -13,28 +16,41 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name("home");
 
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard', [
         'breadcrumbs' => [
-            ['label' => 'Dashboard' ]
+            [
+                'label' => 'Dashboard',
+                'slug' => 'dashboard'
+            ]
         ]
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware(['auth', 'verified'])->prefix('users')->group(function () {
-    /*Route::get('/log', function () {
-        return Inertia::render('User/Log', [
-            'breadcrumbs' => [
-                ['label' => 'Dashboard', 'url' => '/dashboard'],
-                ['label' => 'User'],
-                ['label' => 'Log'],
-            ]
-        ]);
-    })->name('log');*/
+Route::group(['as' => 'web::admin', 'namespace' => 'Web', 'middleware' => 'auth:web', 'prefix' => 'admin'], function () {
+    Route::group(['as' => '.user', 'prefix' => 'user'], function () {
+        Route::group(['as' => '.session', 'prefix' => 'session'], function () {
+            Route::get('/', [SessionController::class, 'index'])->name('.index');
+            Route::get('/get-datatable', [SessionController::class, 'getDatatable'])->name('.getDatatable');
+            Route::get('/show/{id}', [SessionController::class, 'show'])->name('.show');
+        });
 
-    Route::get('/log', [LogController::class, 'index'])->name('log.index');
+        Route::group(['as' => '.role', 'prefix' => 'role'], function () {
+            Route::get('/', [RoleController::class, 'index'])->name('role.index');
+            Route::get('/get-datatable', [RoleController::class, 'getDatatable'])->name('role.getDatatable');
+            Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('.edit');
+            Route::get('/show/{id}', [RoleController::class, 'show'])->name('.show');
+            Route::delete('/delete/{id}', [RoleController::class, 'delete'])->name('.delete');
+        });
+
+        Route::get('/', [UserController::class, 'index'])->name('.index');
+        Route::get('/get-datatable', [UserController::class, 'getDatatable'])->name('.getDatatable');
+        Route::get('/edit/{id}', [UserController::class, 'edit'])->name('.edit');
+        Route::get('/show/{id}', [UserController::class, 'show'])->name('.show');
+        Route::delete('/delete/{id}', [UserController::class, 'delete'])->name('.delete');
+    });
 });
 
 

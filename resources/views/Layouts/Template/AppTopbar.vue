@@ -1,10 +1,10 @@
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-import { useLayout } from '../../../js/composables/layout.js';
-import { usePage, Link } from '@inertiajs/vue3';
+import {ref, computed, onMounted, onBeforeUnmount} from 'vue';
+import {useLayout} from '../../../js/composables/layout.js';
+import {usePage, Link, router} from '@inertiajs/vue3';
 
-const { layoutConfig, onMenuToggle } = useLayout();
-const { props } = usePage();
+const {layoutConfig, onMenuToggle} = useLayout();
+const {props} = usePage();
 
 const outsideClickListener = ref(null);
 const topbarMenuActive = ref(false);
@@ -67,12 +67,35 @@ const isOutsideClicked = (event) => {
 
     return !(sidebarEl.isSameNode(event.target) || sidebarEl.contains(event.target) || topbarEl.isSameNode(event.target) || topbarEl.contains(event.target) || profileEl.isSameNode(event.target) || profileEl.contains(event.target));
 };
+
+const items = ref([
+    {
+        items: [
+            {
+                label: 'Settings',
+                icon: 'pi pi-cog',
+                link: '/profile'
+            },
+            {
+                label: 'Logout',
+                icon: 'pi pi-sign-out'
+            }
+        ]
+    },
+    {
+        separator: true
+    }
+]);
+
+const handleLogout = () => {
+    router.post('/logout');
+}
 </script>
 
 <template>
     <div class="layout-topbar">
         <a href="/" class="layout-topbar-logo">
-            <img :src="logoUrl" alt="logo" />
+            <img :src="logoUrl" alt="logo"/>
             <span>SAKAI</span>
         </a>
 
@@ -85,17 +108,45 @@ const isOutsideClicked = (event) => {
         </button>
 
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <button class="p-link layout-topbar-button" @click="onProfileMenuButton()">
+            <button class="p-link layout-topbar-button" ref="profileButton" @click="$refs.overlayPanel.toggle($event)">
                 <i class="pi pi-user"></i>
                 <span>Profile</span>
             </button>
 
-            <div class="profile-menu" :class="profileMenuClasses">
-                <div class="profile-details">
-                    <span>{{ $page.props.auth.user.name }}</span>
-                    <Link href="/logout" method="post" as="button" class="logout-button">Logout</Link>
-                </div>
-            </div>
+            <OverlayPanel ref="overlayPanel" class="w-64 shadow-lg">
+                <!-- Profile Details -->
+                <Menu :model="items" class="w-full md:w-60">
+                    <template #start>
+                        <span class="inline-flex items-center gap-1 px-2 py-2">
+                            <span class="text-xl font-semibold">LARAVEL<span class="text-primary">11</span></span>
+                        </span>
+                    </template>
+                    <template #item="{ item, props }">
+                        <a v-if="item.label === 'Logout'" class="flex items-center mb-2" v-bind="props.action"
+                           @click.prevent="handleLogout">
+                            <span :class="item.icon"/>&nbsp;
+                            <span>{{ item.label }}</span>
+                        </a>
+                        <a v-else v-ripple :href="item.link" class="flex items-center" v-bind="props.action">
+                            <span :class="item.icon"/>&nbsp;
+                            <span>{{ item.label }}</span>
+                        </a>
+                    </template>
+                    <template #end>
+                        <div class="inline-flex">
+                            <Avatar image="https://primefaces.org/cdn/primevue/images/avatar/amyelsner.png"
+                                    class="mr-2 my-2"
+                                    shape="circle"/>
+                            <span class="flex-col items-start">
+                        <span class="font-bold full-width-span mb-2 font-span-username">{{
+                                $page.props.auth.user.name
+                            }}</span>
+                        <span class="text-sm full-width-span">Admin</span>
+                    </span>
+                        </div>
+                    </template>
+                </Menu>
+            </OverlayPanel>
         </div>
     </div>
 </template>
@@ -135,5 +186,14 @@ const isOutsideClicked = (event) => {
             }
         }
     }
+}
+.full-width-span {
+    display: block;
+    width: 100%;
+}
+
+.font-span-username {
+    font-size: 18px;
+    text-transform: capitalize;
 }
 </style>
