@@ -69,6 +69,7 @@ class SessionController extends Controller
             $sortOrder = $request->input('sortOrder') === 'asc' ? 'asc' : 'desc';
             $query->orderBy($sortField, $sortOrder);
         }
+        $query->whereNotNull('user_id');
 
         // Paginate the results
         $paginate = $query->paginate($rows, ['*'], 'page', $page);
