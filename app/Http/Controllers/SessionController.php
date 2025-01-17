@@ -99,7 +99,7 @@ class SessionController extends Controller
         $breadcrumb = $this->breadcrumb;
         array_push(
             $breadcrumb,
-            ['label' => 'Users', 'slug' => 'user'],
+            ['label' => 'Users', 'slug' => 'user', 'url' => '/admin/user'],
             ['label' => 'Session', 'slug' => 'session', 'url' => '/admin/user/session'],
             ['label' => 'Show', 'slug' => 'show']
         );

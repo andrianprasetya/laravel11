@@ -50,8 +50,7 @@ class RoleController extends Controller
                     if (isset($filter['value']) && $filter['value'] !== null) {
                         $query->whereRaw("{$field}::text ILIKE ?", ['%' . $filter['value'] . '%']);
                     }
-                }
-                elseif ($filter['matchMode'] == "equals") {
+                } elseif ($filter['matchMode'] == "equals") {
                     if (isset($filter['value']) && $filter['value'] !== null) {
                         $query->where($field, $filter['value']);
                     }
@@ -112,8 +111,10 @@ class RoleController extends Controller
     public function show($id): \Inertia\Response|\Inertia\ResponseFactory
     {
         $breadcrumb = $this->breadcrumb;
-        $breadcrumb[] = ['label' => 'Role', 'slug' => 'role', 'url' => '/admin/user/role'];
-        $breadcrumb[] = ['label' => 'Show', 'slug' => 'show'];
+        array_push($breadcrumb,
+            ['label' => 'Users', 'slug' => 'user', 'url' => '/admin/user'],
+            ['label' => 'Role', 'slug' => 'role', 'url' => '/admin/user/role'],
+            ['label' => 'Show', 'slug' => 'show']);
         try {
             $role = Role::query()->find($id);
             if (!$role) {
