@@ -1,6 +1,19 @@
 <script setup>
 import AppMenuItem from './AppMenuItem.vue';
-import { menu } from "../../../js/menu.js";
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+
+const menu = ref([]);
+
+onMounted(async () => {
+    try {
+        const response = await axios.get('/api/menus');
+        menu.value = response.data;
+    } catch (error) {
+        console.error('Error fetching menu:', error);
+    }
+});
+console.log(menu)
 </script>
 
 <template>
