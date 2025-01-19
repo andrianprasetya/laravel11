@@ -3,15 +3,21 @@ import AppLayoutWithoutSidebar from "@/Layouts/Template/AppLayoutWithoutSidebar.
 import {Head, usePage} from "@inertiajs/vue3";
 import Card from 'primevue/card';
 import Divider from 'primevue/divider';
+import sessionScript from "../Script/session.js";
+
+const {
+    formatDate,
+    getDecodedPayload,
+} = sessionScript();
+
 
 const {props} = usePage();
 const menu = props.menu + " Show";
 const session = props.session;
 const user = props.user;
-
 session.value = {
     ...session,
-    email_verified_at: new Date(session.email_verified_at)
+    last_activity: new Date(session.last_activity)
 }
 
 const goBack = () => {
@@ -39,7 +45,7 @@ const goBack = () => {
                                     </Button>
                                 </div>
                                 <div class="col-12 md:col-6 mt-5">
-                                        <h3 class="text-lg font-bold">User Information</h3>
+                                    <h3 class="text-lg font-bold">User Information</h3>
                                 </div>
                             </div>
                             <Divider/>
@@ -81,15 +87,18 @@ const goBack = () => {
                             </div>
                             <div class="field mb-4">
                                 <label for="user_agent" class="block text-bold mb-2">Tools</label>
-                                <InputText id="user_agent" type="text" :value="session.user_agent" class="w-full" disabled/>
+                                <InputText id="user_agent" type="text" :value="session.user_agent" class="w-full"
+                                           disabled/>
                             </div>
                             <div class="field mb-4">
                                 <label for="payload" class="block text-bold mb-2">Payload</label>
-                                <Textarea id="payload" :value="session.payload" class="w-full" disabled/>
+                                <Textarea id="payload" autoResize :value="getDecodedPayload(session.payload)"
+                                          class="w-full" disabled/>
                             </div>
                             <div class="field mb-4">
                                 <label for="last_activity" class="block text-bold mb-2">Last Activity</label>
-                                <InputText id="last_activity" type="text" :value="session.last_activity" class="w-full" disabled/>
+                                <InputText id="last_activity" type="text" :value="formatDate(session.last_activity)" class="w-full"
+                                           disabled/>
                             </div>
                             <!--                    <div class="field mb-4">
                                                     <label for="email_verified_at" class="block text-bold mb-2">Email Verified</label>

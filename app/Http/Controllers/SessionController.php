@@ -70,6 +70,8 @@ class SessionController extends Controller
             $query->orderBy($sortField, $sortOrder);
         }
 
+        $query->whereNotNull('user_id');
+
         // Paginate the results
         $paginate = $query->paginate($rows, ['*'], 'page', $page);
 
@@ -79,8 +81,8 @@ class SessionController extends Controller
             $items[] = array(
                 "id" => $row['id'],
                 "ip_address" => $row['ip_address'],
-                "name" => $row['user'] ? $row['user']['name'] : "",
-                "email" => $row['user'] ? $row['user']['email'] : "",
+                "name" => $row['user']['name'],
+                "email" => $row['user']['email'],
                 "payload" => $row['payload'],
                 "last_activity" => $row['last_activity'],
                 "actions" => [
