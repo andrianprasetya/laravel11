@@ -50,7 +50,7 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                echo "Running PHPUnit tests..."
-               sh "${PHP} artisan test --env=testing --no-interaction"
+               sh "${PHP} artisan test"
             }
         }
 
