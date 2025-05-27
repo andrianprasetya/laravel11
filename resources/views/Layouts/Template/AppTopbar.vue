@@ -22,12 +22,6 @@ const logoUrl = computed(() => {
     return `/layout/images/${layoutConfig.darkTheme.value ? 'logo-white' : 'logo-dark'}.svg`;
 });
 
-const onTopBarMenuButton = () => {
-    topbarMenuActive.value = !topbarMenuActive.value;
-};
-const onProfileMenuButton = () => {
-    profileMenuActive.value = !profileMenuActive.value;
-};
 
 const topbarMenuClasses = computed(() => {
     return {
@@ -35,11 +29,6 @@ const topbarMenuClasses = computed(() => {
     };
 });
 
-const profileMenuClasses = computed(() => {
-    return {
-        'profile-menu-active': profileMenuActive.value
-    };
-});
 
 const bindOutsideClickListener = () => {
     if (!outsideClickListener.value) {
@@ -103,14 +92,9 @@ const handleLogout = () => {
             <i class="pi pi-bars"></i>
         </button>
 
-        <button class="p-link layout-topbar-menu-button layout-topbar-button" @click="onTopBarMenuButton()">
-            <i class="pi pi-ellipsis-v"></i>
-        </button>
-
         <div class="layout-topbar-menu" :class="topbarMenuClasses">
-            <button class="p-link layout-topbar-button" ref="profileButton" @click="$refs.overlayPanel.toggle($event)">
+            <button class="p-link layout-topbar-button" @click="$refs.overlayPanel.toggle($event)">
                 <i class="pi pi-user"></i>
-                <span>Profile</span>
             </button>
 
             <OverlayPanel ref="overlayPanel" class="w-64 shadow-lg">
