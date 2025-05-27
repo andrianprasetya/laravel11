@@ -4,7 +4,7 @@ pipeline {
     environment {
         DB_PASSWORD = credentials('db-password')
         PHP = "/usr/bin/php"
-        COMPOSER = "/usr/bin/composer"
+        COMPOSER = "/usr/local/bin/composer"
         NODE = "/usr/bin/node"
         NPM = "/usr/bin/npm"
     }
@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                sh 'echo "Checking out source code... : ${DB_PASSWORD}"'
+                echo "Checking out source code..."
                 checkout scm
             }
         }
@@ -20,7 +20,7 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 echo "Installing Composer dependencies..."
-                sh "${COMPOSER} install --no-interaction --prefer-dist --optimize-autoloader"
+                sh "sudo ${COMPOSER} install --no-interaction --prefer-dist --optimize-autoloader"
             }
         }
 
