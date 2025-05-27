@@ -50,7 +50,8 @@ pipeline {
         stage('Run Unit Tests') {
             steps {
                echo "Running PHPUnit tests..."
-               sh "${PHP} artisan test"
+               sh "${PHP} artisan test --testsuite=Unit"
+               sh "${PHP} artisan test --testsuite=Feature"
             }
         }
 
