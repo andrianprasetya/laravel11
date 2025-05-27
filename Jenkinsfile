@@ -66,21 +66,23 @@ pipeline {
               }
               steps {
                   echo "Deploying code..."
-                  rsync -av \
-                    --exclude='.env' \
-                    --exclude='.env.testing' \
-                    --exclude='.git' \
-                    --exclude='.gitignore' \
-                    --exclude='tests' \
-                    --exclude='phpunit.xml' \
-                    --exclude='node_modules' \
-                    --exclude='storage/logs' \
-                    --exclude='storage/framework/cache' \
-                    --exclude='storage/framework/sessions' \
-                    --exclude='storage/framework/testing' \
-                    --exclude='storage/framework/views' \
-                    --exclude='vendor' \
-                    ./ /var/www/laravel11 // replace directory project prod
+                   sh """
+                      rsync -av \
+                      --exclude='.env' \
+                      --exclude='.env.testing' \
+                      --exclude='.git' \
+                      --exclude='.gitignore' \
+                      --exclude='tests' \
+                      --exclude='phpunit.xml' \
+                      --exclude='node_modules' \
+                      --exclude='storage/logs' \
+                      --exclude='storage/framework/cache' \
+                      --exclude='storage/framework/sessions' \
+                      --exclude='storage/framework/testing' \
+                      --exclude='storage/framework/views' \
+                      --exclude='vendor' \
+                      ./ /var/www/laravel11
+                      """   // replace directory project prod
                   dir("/var/www/laravel11") {
                       sh "${COMPOSER} install --no-dev --optimize-autoloader"
                       sh "${PHP} artisan config:cache"
