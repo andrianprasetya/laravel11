@@ -37,7 +37,7 @@ pipeline {
             steps {
                 echo "Setting up Laravel environment for testing..."
                 sh "cp .env.testing .env || true" // Gunakan .env.testing untuk unit test
-                sh "sed -i 's/^DB_PASSWORD=.*/DB_PASSWORD=${DB_PASSWORD_POSTGRESQL}/' .env"
+                sh "sed -i 's/^DB_PASSWORD=.*/DB_PASSWORD=${DB_PASSWORD}/' .env"
                 sh "${PHP} artisan config:clear"
                 sh "${PHP} artisan cache:clear"
                 sh "${PHP} artisan view:clear"
