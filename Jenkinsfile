@@ -61,27 +61,13 @@ pipeline {
               }
               steps {
                   echo "Deploying code..."
-                   sh """
-                      rsync -av \
-                      --exclude='.env' \
-                      --exclude='.env.testing' \
-                      --exclude='.git' \
-                      --exclude='.gitignore' \
-                      --exclude='tests' \
-                      --exclude='phpunit.xml' \
-                      --exclude='node_modules' \
-                      --exclude='storage/logs' \
-                      --exclude='storage/framework/cache' \
-                      --exclude='storage/framework/sessions' \
-                      --exclude='storage/framework/testing' \
-                      --exclude='storage/framework/views' \
-                      --exclude='vendor' \
-                      ./ /var/www/laravel11
-                      """   // replace directory project prod
                   dir("/var/www/laravel11") {
-                      sh "${COMPOSER} install --no-dev --optimize-autoloader"
-                      sh "${PHP} artisan config:cache"
-                      sh "${PHP} artisan migrate --force"
+                      sh """
+                          sudo -u andrianprasetya git pull origin develop/sakai-vue
+                          sudo -u andrianprasetya ${COMPOSER} install --no-dev --optimize-autoloader
+                          sudo -u andrianprasetya ${PHP} artisan config:cache
+                          sudo -u andrianprasetya ${PHP} artisan migrate --force
+                         """
                   }
             }
         }
