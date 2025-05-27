@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo "Checking out source code...${DB_PASSWORD}"
+                'echo "Checking out source code... ${DB_PASSWORD}"'
                 checkout scm
             }
         }
