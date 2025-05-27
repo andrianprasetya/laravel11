@@ -38,6 +38,7 @@ pipeline {
                 echo "Setting up Laravel environment for testing..."
                 sh "cp .env.testing .env || true" // Gunakan .env.testing untuk unit test
                 sh "sed -i 's/^DB_PASSWORD=.*/DB_PASSWORD=${DB_PASSWORD}/' .env"
+                sh "${PHP} artisan migrate --env=testing --force"
                 sh "${PHP} artisan config:clear"
                 sh "${PHP} artisan cache:clear"
                 sh "${PHP} artisan view:clear"
@@ -45,13 +46,6 @@ pipeline {
 
             }
         }
-
-        stage('Run Migrations (Testing)') {
-            steps {
-               echo "Running database migrations..."
-               sh "${PHP} artisan migrate --env=testing --force"
-               }
-            }
 
         stage('Run Unit Tests') {
             steps {
