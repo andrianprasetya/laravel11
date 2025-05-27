@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DB_PASSWORD = credentials('DB_PASSWORD_POSTGRESQL')
+        DB_PASSWORD = credentials('DB_PASSWORD')
         PHP = "/usr/bin/php"
         COMPOSER = "/usr/bin/composer"
         NODE = "/usr/bin/node"
