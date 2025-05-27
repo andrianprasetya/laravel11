@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DB_PASSWORD = credentials('DB_PASSWORD')
+        DB_PASSWORD = credentials('db-password')
         PHP = "/usr/bin/php"
         COMPOSER = "/usr/bin/composer"
         NODE = "/usr/bin/node"
@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo "Checking out source code..."
+                echo "Checking out source code...${DB_PASSWORD}"
                 checkout scm
             }
         }
